@@ -1,0 +1,34 @@
+# Secrets / environment
+.env
+.env.*
+!.env.example
+
+# Node / TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Claude Code local settings (shared agents/settings stay tracked)
+.claude/settings.local.json
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
