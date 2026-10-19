@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "findings.schema.json",
+  "title": "Subagent findings",
+  "description": "Output returned by the web-searcher and document-analyst subagents. Each finding keeps its content (the claim) separate from its metadata (where it came from and how much to trust it).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metadata", "findings", "gaps"],
+  "properties": {
+    "metadata": {
+      "description": "Run-level metadata. Says nothing about any single finding.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent", "question", "sources_consulted"],
+      "properties": {
+        "agent": { "enum": ["web-searcher", "document-analyst"] },
+        "question": { "type": "string", "description": "The subtask as received, in one sentence." },
+        "sources_consulted": { "type": "integer", "minimum": 0, "description": "Distinct URLs fetched or documents read." }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "gaps": {
+      "description": "What could not be found or verified. Empty array if none.",
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "content", "metadata"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^([A-Z][0-9]+-)?F[0-9]+$", "description": "F1, F2, ... unique within one output. The synthesizer prefixes the input label (W1-F1) when pooling." },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["claim"],
+          "properties": {
+            "claim": { "type": "string", "minLength": 1, "description": "One self-contained factual statement. Prefix with 'Interpretation: ' if it is an inference rather than something the source states." }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_url", "document_name", "page_number", "confidence"],
+          "properties": {
+            "source_url": {
+              "type": ["string", "null"],
+              "format": "uri",
+              "description": "URL of the web page. null for local documents."
+            },
+            "document_name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Web: the page title exactly as published. Local: the file path."
+            },
+            "page_number": {
+              "type": ["integer", "string", "null"],
+              "pattern": "^([0-9]+-[0-9]+|L[0-9]+(-[0-9]+)?)$",
+              "minimum": 1,
+              "description": "Integer for one PDF page (12); string for a page range (\"12-14\") or a line reference in a file without pages (\"L40-58\"); null for web pages."
+            },
+            "confidence": {
+              "enum": ["high", "medium", "low"],
+              "description": "high: stated explicitly by an authoritative primary source, or corroborated by 2+ independent sources. medium: stated by one credible source, or a close reading needing minor interpretation. low: single non-authoritative source, outdated, inferred, or contradicted by another source."
+            }
+          }
+        }
+      }
+    }
+  }
+}
