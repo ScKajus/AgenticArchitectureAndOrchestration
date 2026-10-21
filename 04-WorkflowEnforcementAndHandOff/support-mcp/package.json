@@ -1,0 +1,20 @@
+{
+  "name": "support-mcp",
+  "version": "1.0.0",
+  "description": "MCP server with the customer support tools: get_customer, lookup_order, process_refund",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node src/index.ts",
+    "typecheck": "tsc"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

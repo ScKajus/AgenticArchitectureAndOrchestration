@@ -1,0 +1,10 @@
+{
+  "enabledMcpjsonServers": ["support"],
+  "permissions": {
+    "allow": [
+      "mcp__support__get_customer",
+      "mcp__support__lookup_order",
+      "mcp__support__process_refund"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "support": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["support-mcp/src/index.ts"]
+    }
+  }
+}
