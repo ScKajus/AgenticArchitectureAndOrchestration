@@ -108,3 +108,24 @@ export const refunds: Refund[] = [];
 // only accepts a customer_id from this set, so the "verify first" gate is
 // enforced by the server, not just by the agent's prompt.
 export const verifiedCustomerIds = new Set<string>();
+
+export type HandoffReason =
+    | "customer_request"
+    | "exceeds_authority"
+    | "policy_gap"
+    | "identity_unverified"
+    | "system_error"
+    | "sensitive";
+
+export interface Handoff {
+    handoff_id: string;
+    reason: HandoffReason;
+    customer_id: string | null;
+    order_id: string | null;
+    refund_amount: number | null;
+    created_at: string;
+}
+
+// Handoffs queued for human agents in this server session. The full summary is
+// also appended to handoffs.jsonl so a human can read it outside the conversation.
+export const handoffs: Handoff[] = [];

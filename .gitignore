@@ -32,3 +32,6 @@ desktop.ini
 
 # Logs
 *.log
+
+# Human handoff queue written by 04 support-mcp
+handoffs.jsonl
